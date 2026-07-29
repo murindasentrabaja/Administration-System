@@ -30,114 +30,18 @@
         }
 
         /* =========================================
-           1. INTRO SCREEN (COLORFUL BACKGROUND)
-        ========================================= */
-        #intro-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(-45deg, var(--gemini-pink), var(--gemini-purple), var(--gemini-blue), var(--gemini-cyan));
-            background-size: 400% 400%;
-            animation: gradientBG 10s ease infinite;
-            z-index: 9999;
-            transition: opacity 1.2s ease-in-out, visibility 1.2s;
-        }
-
-        @keyframes gradientBG {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        /* Logo yang bisa diklik */
-        .logo-intro {
-            width: 280px;
-            height: 280px;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 0 50px rgba(255,255,255,0.5), inset 0 0 30px var(--gemini-cyan);
-            position: relative;
-            animation: float 4s ease-in-out infinite;
-            padding: 20px;
-            border: 4px solid #fff;
-            cursor: pointer; /* Kursor menjadi tangan */
-            transition: transform 0.4s ease, box-shadow 0.4s ease;
-        }
-
-        .logo-intro img {
-            width: 85%;
-            object-fit: contain;
-            filter: drop-shadow(0px 5px 10px rgba(0,0,0,0.2));
-            transition: transform 0.4s ease;
-        }
-
-        /* Hover efek pada logo saat mau diklik */
-        .logo-intro:hover {
-            transform: scale(1.05) translateY(-10px);
-            box-shadow: 0 0 80px rgba(255,255,255,0.9), inset 0 0 50px var(--gemini-pink);
-        }
-        
-        .logo-intro:hover img {
-            transform: scale(1.1);
-        }
-
-        .logo-intro::before {
-            content: '';
-            position: absolute;
-            top: -15px; left: -15px; right: -15px; bottom: -15px;
-            border-radius: 50%;
-            border: 3px solid transparent;
-            border-top-color: var(--gemini-cyan);
-            border-bottom-color: var(--gemini-pink);
-            animation: spin 3s linear infinite;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-20px); }
-        }
-
-        /* Teks Petunjuk Klik */
-        .click-hint {
-            margin-top: 40px;
-            color: rgba(255, 255, 255, 0.8);
-            font-size: 1.1rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            font-weight: 500;
-            animation: pulse-text 2s infinite;
-            pointer-events: none;
-        }
-
-        @keyframes pulse-text {
-            0%, 100% { opacity: 0.4; }
-            50% { opacity: 1; }
-        }
-
-        /* =========================================
-           2. MAIN DASHBOARD SYSTEM (ELEGAN)
+           MAIN DASHBOARD SYSTEM
         ========================================= */
         #main-system {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
             display: flex;
-            opacity: 0;
-            visibility: hidden;
+            opacity: 1;
+            visibility: visible;
             background-image: url('Plant MSB.jpg');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            transition: opacity 1.5s ease-in-out;
         }
 
         #main-system::before {
@@ -180,10 +84,9 @@
             border-bottom: 1px solid rgba(255,255,255,0.15);
         }
 
-        /* Perbaikan Logo Sidebar: Lebih besar, elegan, tidak kaku */
         .sidebar-header img {
-            width: 200px; /* Ukuran diperbesar */
-            background: rgba(255, 255, 255, 0.9); /* Frosted white */
+            width: 200px;
+            background: rgba(255, 255, 255, 0.9);
             padding: 15px;
             border-radius: 12px;
             margin-bottom: 15px;
@@ -195,7 +98,6 @@
             transform: scale(1.03);
         }
 
-        /* Perbaikan Teks: Lebih bersih, font elegan, warna tidak lebay */
         .sidebar-header h2 {
             color: #f8f9fa;
             font-size: 1rem;
@@ -348,13 +250,6 @@
 </head>
 <body>
 
-    <div id="intro-screen">
-        <div class="logo-intro" onclick="masukSistem()">
-            <img src="MSB Logo.png" alt="PT Murinda Sentra Baja">
-        </div>
-        <p class="click-hint">PT Murinda Sentra Baja, Kalijati-Subang</p>
-    </div>
-
     <div id="main-system">
         
         <aside class="sidebar">
@@ -397,6 +292,11 @@
                 <a href="https://murindasentrabaja.github.io/Surat-Perintah-Lembur-MSB/" target="systemFrame" class="nav-item" onclick="setActive(this)">
                     <i class="fas fa-user-clock"></i> Surat Perintah Lembur
                 </a>
+
+                <!-- Link Baru: Parking System -->
+                <a href="https://murindasentrabaja.github.io/Parking-System/" target="systemFrame" class="nav-item" onclick="setActive(this)">
+                    <i class="fas fa-square-parking"></i> Parking System
+                </a>
             </nav>
         </aside>
 
@@ -419,22 +319,6 @@
     </div>
 
     <script>
-        function masukSistem() {
-            const intro = document.getElementById('intro-screen');
-            const main = document.getElementById('main-system');
-
-            intro.style.opacity = '0';
-            intro.style.transform = 'scale(1.2)';
-            
-            setTimeout(() => {
-                intro.style.visibility = 'hidden';
-                intro.style.display = 'none';
-                
-                main.style.visibility = 'visible';
-                main.style.opacity = '1';
-            }, 800);
-        }
-
         function setActive(element) {
             let items = document.querySelectorAll('.nav-item');
             items.forEach(item => item.classList.remove('active'));
