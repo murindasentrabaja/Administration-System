@@ -1,347 +1,206 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MSB Digital Document Center</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --gemini-blue: #1A73E8;
-            --gemini-purple: #8A2BE2;
-            --gemini-pink: #FF007F;
-            --gemini-cyan: #00FFFF;
-            --glass-bg: rgba(255, 255, 255, 0.1);
-            --glass-border: rgba(255, 255, 255, 0.3);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#eef3ff">
+<title>MSB Digital Document Center</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0f1b3d;--mut:#5b6785;--line:rgba(15,27,61,.1);--glass:rgba(255,255,255,.66);--gb:rgba(255,255,255,.9);--sh:0 12px 40px -14px rgba(47,91,255,.28);--r:22px;--st:env(safe-area-inset-top,0px);--sb:env(safe-area-inset-bottom,0px)}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{height:100%}
+body{font-family:'Plus Jakarta Sans',system-ui,-apple-system,'Segoe UI',sans-serif;color:var(--ink);overflow:hidden;background:#f4f7ff}
+button{font-family:inherit;color:inherit}
+[hidden]{display:none!important}
+:focus-visible{outline:3px solid #7c5cff;outline-offset:2px}
+.bg{position:fixed;inset:0;z-index:0;background:radial-gradient(60vmax 60vmax at 6% 0,#bcd4ff 0,transparent 60%),radial-gradient(50vmax 50vmax at 100% 8%,#e3cbff 0,transparent 60%),radial-gradient(55vmax 55vmax at 88% 100%,#ffd3e0 0,transparent 60%),radial-gradient(45vmax 45vmax at 0 100%,#c8f3e6 0,transparent 60%),#f4f7ff}
+.app{position:fixed;inset:0;z-index:1;display:flex;gap:16px;padding:16px}
+.glass{background:var(--glass);backdrop-filter:blur(22px) saturate(1.6);-webkit-backdrop-filter:blur(22px) saturate(1.6);border:1px solid var(--gb);box-shadow:var(--sh)}
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+/* Sidebar */
+.side{width:292px;flex:none;display:flex;flex-direction:column;border-radius:var(--r);overflow:hidden}
+.sh{display:flex;align-items:center;gap:12px;padding:18px 16px 12px}
+.logo{background:#fff;border-radius:14px;padding:8px 10px;box-shadow:0 4px 14px -6px rgba(47,91,255,.4)}
+.logo img{display:block;height:34px;width:auto;max-width:120px}
+.st{flex:1;min-width:0;line-height:1.25}
+.st b{display:block;font-size:1.02rem;font-weight:800;letter-spacing:-.02em}
+.st span{font-size:.75rem;color:var(--mut)}
+.nav{flex:1;overflow-y:auto;padding:4px 12px 18px;scrollbar-width:thin}
+.gl{display:flex;align-items:center;gap:8px;padding:16px 10px 6px;font-size:.78rem;font-weight:700;color:var(--mut)}
+.dot{width:8px;height:8px;border-radius:50%}
+.ic{width:36px;height:36px;border-radius:11px;display:grid;place-items:center;flex:none;color:#fff;font-size:.95rem;background:linear-gradient(135deg,var(--c1),var(--c2));box-shadow:0 6px 14px -6px var(--c2)}
+.ni{display:flex;align-items:center;gap:12px;width:100%;min-height:50px;padding:7px 10px;border:0;border-radius:14px;background:transparent;font-size:.9rem;font-weight:600;text-align:left;cursor:pointer;transition:background .2s,box-shadow .2s}
+.ni:hover{background:rgba(255,255,255,.75)}
+.ni.on{background:#fff;box-shadow:0 8px 20px -10px var(--c2)}
+.ni span:nth-child(2){flex:1}
+.ex{font-size:.7rem;color:var(--mut)}
 
-        body {
-            overflow: hidden; 
-            background-color: #000;
-        }
+/* Konten */
+.main{flex:1;min-width:0;display:flex;flex-direction:column;gap:12px}
+.bar{display:flex;align-items:center;gap:10px;padding:10px 14px 10px 18px;border-radius:var(--r)}
+.bar h1{flex:1;min-width:0;font-size:1.15rem;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ib{width:42px;height:42px;flex:none;border-radius:13px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
+.menu,.close{display:none}
+.clock{padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;font-variant-numeric:tabular-nums;color:#3b4fd8;background:linear-gradient(135deg,#e6efff,#f1e6ff)}
+.stage{flex:1;min-height:0;position:relative;border-radius:var(--r);overflow:hidden}
+iframe{display:none;position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
+.stage.fr iframe{display:block}
+.stage.fr .home{display:none}
+.home{position:absolute;inset:0;overflow-y:auto;padding:20px 22px 28px}
+.hero{border-radius:20px;padding:30px 32px;color:#fff;background:linear-gradient(120deg,rgba(47,91,255,.86),rgba(124,92,255,.84) 55%,rgba(255,92,150,.84)),url('Plant MSB.jpg') center/cover;box-shadow:0 20px 40px -18px rgba(80,70,255,.65)}
+.hero h2{font-size:clamp(1.45rem,3.2vw,2.15rem);font-weight:800;letter-spacing:-.025em;line-height:1.15}
+.hero p{margin-top:8px;max-width:46ch;font-size:.95rem;opacity:.94}
+.grp{margin-top:24px}
+.grp h3{display:flex;align-items:center;gap:8px;margin-bottom:10px;font-size:.95rem;font-weight:700}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(176px,1fr));gap:12px}
+.card{display:flex;flex-direction:column;align-items:flex-start;gap:14px;padding:16px;border-radius:18px;border:1px solid var(--gb);background:rgba(255,255,255,.82);text-align:left;font-size:.92rem;font-weight:700;cursor:pointer;transition:transform .2s,box-shadow .2s}
+.card:hover{transform:translateY(-3px);box-shadow:0 16px 28px -16px var(--c2)}
+.card .ic{width:46px;height:46px;border-radius:14px;font-size:1.1rem}
 
-        /* =========================================
-           MAIN DASHBOARD SYSTEM
-        ========================================= */
-        #main-system {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            display: flex;
-            opacity: 1;
-            visibility: visible;
-            background-image: url('Plant MSB.jpg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+/* Memuat */
+.ld{position:absolute;top:0;left:0;height:3px;width:0;opacity:0;z-index:3;background:linear-gradient(90deg,#2f80ff,#7c5cff,#ff5c96)}
+.wait{display:none;position:absolute;inset:0;z-index:2;place-content:center;justify-items:center;gap:12px;background:#fff;color:var(--mut);font-size:.9rem;font-weight:600;pointer-events:none}
+.stage.busy .ld{opacity:1;animation:ld 1.4s ease-in-out infinite}
+.stage.busy .wait{display:grid}
+.spin{width:34px;height:34px;border-radius:50%;border:4px solid #e3e9ff;border-top-color:#7c5cff;animation:sp .8s linear infinite}
+@keyframes ld{0%{width:0}80%{width:92%}100%{width:100%;opacity:0}}
+@keyframes sp{to{transform:rotate(360deg)}}
+.scrim{display:none}
 
-        #main-system::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(26, 115, 232, 0.15) 0%, rgba(138, 43, 226, 0.15) 100%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        /* SIDEBAR KIRI */
-        .sidebar {
-            width: 320px;
-            height: 100vh;
-            background: rgba(10, 15, 30, 0.6);
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
-            border-right: 1px solid var(--glass-border);
-            display: flex;
-            flex-direction: column;
-            padding: 30px 20px;
-            z-index: 10;
-            box-shadow: 5px 0 20px rgba(0,0,0,0.3);
-            overflow-y: auto;
-        }
-
-        .sidebar::-webkit-scrollbar {
-            width: 6px;
-        }
-        .sidebar::-webkit-scrollbar-thumb {
-            background: var(--gemini-cyan);
-            border-radius: 10px;
-        }
-
-        .sidebar-header {
-            text-align: center;
-            margin-bottom: 30px;
-            padding-bottom: 25px;
-            border-bottom: 1px solid rgba(255,255,255,0.15);
-        }
-
-        .sidebar-header img {
-            width: 200px;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 12px;
-            margin-bottom: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-            transition: transform 0.3s ease;
-        }
-        
-        .sidebar-header img:hover {
-            transform: scale(1.03);
-        }
-
-        .sidebar-header h2 {
-            color: #f8f9fa;
-            font-size: 1rem;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-top: 5px;
-        }
-
-        /* Tombol Navigasi */
-        .nav-menu {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            text-decoration: none;
-            color: #e0e0e0;
-            background: rgba(255,255,255,0.05);
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 500;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nav-item i {
-            font-size: 1.2rem;
-            width: 30px;
-            margin-right: 15px;
-            color: var(--gemini-cyan);
-            transition: all 0.3s ease;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            background: rgba(255,255,255,0.15);
-            border-color: var(--gemini-cyan);
-            color: #fff;
-            transform: translateX(5px);
-            box-shadow: 0 0 15px rgba(0, 255, 255, 0.3);
-        }
-
-        .nav-item:hover i, .nav-item.active i {
-            color: var(--gemini-pink);
-            transform: scale(1.2);
-        }
-
-        .nav-item::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 0;
-            height: 100%; width: 4px;
-            background: linear-gradient(to bottom, var(--gemini-cyan), var(--gemini-purple));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .nav-item:hover::before, .nav-item.active::before {
-            opacity: 1;
-        }
-
-        /* KONTEN UTAMA */
-        .main-content {
-            flex: 1;
-            height: 100vh;
-            padding: 20px;
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .top-bar {
-            background: rgba(10, 15, 30, 0.4);
-            backdrop-filter: blur(10px);
-            padding: 15px 30px;
-            border-radius: 15px;
-            border: 1px solid var(--glass-border);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 20px;
-            box-shadow: var(--glass-shadow);
-        }
-
-        .top-bar h1 {
-            color: #fff;
-            font-size: 1.5rem;
-            font-weight: 600;
-        }
-
-        .top-bar .time {
-            color: var(--gemini-cyan);
-            font-weight: 500;
-            letter-spacing: 1px;
-        }
-
-        .iframe-container {
-            flex: 1;
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(5px);
-            border-radius: 15px;
-            border: 1px solid rgba(255,255,255,0.2);
-            overflow: hidden;
-            position: relative;
-            box-shadow: 0 0 30px rgba(0,0,0,0.2);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .welcome-message {
-            position: absolute;
-            text-align: center;
-            color: #fff;
-            pointer-events: none;
-            transition: opacity 0.5s ease;
-        }
-
-        .welcome-message h2 {
-            font-size: 2.5rem;
-            margin-bottom: 10px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            font-weight: 600;
-        }
-        .welcome-message p {
-            font-size: 1.1rem;
-            color: #ddd;
-            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
-        }
-
-        iframe {
-            width: 100%;
-            height: 100%;
-            border: none;
-            border-radius: 15px;
-            position: relative;
-            z-index: 2;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            background: #fff;
-        }
-    </style>
+/* Ponsel & tablet */
+@media(max-width:860px){
+ .app{padding:0;gap:0}
+ .side{position:fixed;z-index:30;top:0;bottom:0;left:0;width:min(86vw,330px);border-radius:0 24px 24px 0;background:rgba(255,255,255,.94);padding-top:var(--st);transform:translateX(-105%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+ .side.open{transform:none}
+ .scrim{display:block;position:fixed;inset:0;z-index:20;background:rgba(15,27,61,.42);opacity:0;pointer-events:none;transition:opacity .25s}
+ .scrim.on{opacity:1;pointer-events:auto}
+ .main{gap:0;padding-bottom:var(--sb)}
+ .bar{border-radius:0;border-width:0 0 1px;padding:8px 12px;padding-top:calc(8px + var(--st))}
+ .menu,.close{display:grid}
+ .clock{display:none}
+ .stage{border-radius:0;border:0;box-shadow:none}
+ .home{padding:14px 14px 24px}
+ .hero{padding:22px 20px}
+ .cards{grid-template-columns:repeat(2,1fr);gap:10px}
+ .card{padding:14px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
 </head>
 <body>
+<div class="bg"></div>
+<div class="scrim" id="scrim"></div>
+<div class="app">
+ <aside class="side glass" id="side">
+  <div class="sh">
+   <div class="logo"><img src="MSB Logo.png" alt="MSB Logo"></div>
+   <div class="st"><b>Document Center</b><span>Administration System</span></div>
+   <button class="ib close" id="close" aria-label="Tutup menu"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <nav class="nav" id="nav">
+   <button class="ni on" id="homeBtn" style="--c1:#5b9bff;--c2:#2f5bff"><span class="ic"><i class="fa-solid fa-house"></i></span><span>Beranda</span></button>
+  </nav>
+ </aside>
 
-    <div id="main-system">
-        
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <img src="MSB Logo.png" alt="MSB Logo">
-                <h2>Administration System</h2>
-            </div>
-            
-            <nav class="nav-menu">
-                <a href="https://docs.google.com/document/d/1bV8J84DPY8n1P4yFK44lUmOkatdAmcPMySlFePPUmWE/edit?tab=t.0" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-file-signature"></i> KOP Surat
-                </a>
-                <a href="https://murindasentrabaja.github.io/Memo-MSB/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-envelope-open-text"></i> Digital Memo
-                </a>
-                <a href="https://murindasentrabaja.github.io/Minutes-Of-Meeting-MOM-/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-users-viewfinder"></i> Minutes Of Meeting
-                </a>
+ <main class="main">
+  <header class="bar glass">
+   <button class="ib menu" id="menu" aria-label="Buka menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+   <h1 id="title">Beranda</h1>
+   <button class="ib" id="ext" aria-label="Buka di tab baru" title="Buka di tab baru" hidden><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
+   <div class="clock" id="clock">00.00.00 WIB</div>
+  </header>
 
-                <a href="https://murindasentrabaja.github.io/Form-Gudang/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-boxes-stacked"></i> Permintaan Gudang
-                </a>
-                <a href="https://murindasentrabaja.github.io/Form-Perbaikan-Mesin/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-screwdriver-wrench"></i> Perbaikan Mesin
-                </a>
-                <a href="https://murindasentrabaja.github.io/Label-Komponen/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-tags"></i> Label Komponen
-                </a>
-                <a href="https://murindasentrabaja.github.io/Product-Label/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-barcode"></i> Product Label
-                </a>
-
-                <a href="https://murindasentrabaja.github.io/Logistics/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-truck-fast"></i> Delivery Order
-                </a>
-                <a href="https://murindasentrabaja.github.io/Surat-Jalan/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-route"></i> Surat Jalan
-                </a>
-
-                <a href="https://murindasentrabaja.github.io/Surat-Perintah-Lembur-MSB/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-user-clock"></i> Surat Perintah Lembur
-                </a>
-
-                <!-- Link Baru: Parking System -->
-                <a href="https://murindasentrabaja.github.io/MSB-Parking-Sticker/" target="systemFrame" class="nav-item" onclick="setActive(this)">
-                    <i class="fas fa-square-parking"></i> Parking System
-                </a>
-            </nav>
-        </aside>
-
-        <main class="main-content">
-            <div class="top-bar">
-                <h1 id="page-title">Dashboard</h1>
-                <div class="time" id="clock">00:00:00</div>
-            </div>
-
-            <div class="iframe-container">
-                <div class="welcome-message" id="welcome-msg">
-                    <h2>Selamat Datang</h2>
-                    <p>Silakan pilih menu di samping untuk membuka dokumen digital.</p>
-                </div>
-                
-                <iframe name="systemFrame" id="systemFrame" onload="frameLoaded()"></iframe>
-            </div>
-        </main>
-
+  <section class="stage glass" id="stage">
+   <div class="home" id="home">
+    <div class="hero">
+     <h2 id="greet">Selamat datang</h2>
+     <p>Pilih dokumen digital yang ingin Anda buat atau kelola.</p>
     </div>
+    <div id="groups"></div>
+   </div>
+   <div class="ld"></div>
+   <div class="wait"><div class="spin"></div>Memuat aplikasi…</div>
+   <iframe id="frame" title="Aplikasi dokumen" allow="camera; clipboard-read; clipboard-write; fullscreen; geolocation"></iframe>
+  </section>
+ </main>
+</div>
 
-    <script>
-        function setActive(element) {
-            let items = document.querySelectorAll('.nav-item');
-            items.forEach(item => item.classList.remove('active'));
-            
-            element.classList.add('active');
-            document.getElementById('page-title').innerText = element.innerText;
+<script>
+const $=id=>document.getElementById(id);
+const G=[
+ {n:'Surat & dokumen',c:['#5b9bff','#2f5bff'],i:[
+  ['KOP Surat','fa-file-signature','https://docs.google.com/document/d/1bV8J84DPY8n1P4yFK44lUmOkatdAmcPMySlFePPUmWE/edit?tab=t.0',1],
+  ['Digital Memo','fa-envelope-open-text','https://murindasentrabaja.github.io/Memo-MSB/'],
+  ['Minutes Of Meeting','fa-users-viewfinder','https://murindasentrabaja.github.io/Minutes-Of-Meeting-MOM-/']]},
+ {n:'Gudang & mesin',c:['#ffc14d','#ff8a1f'],i:[
+  ['Permintaan Gudang','fa-boxes-stacked','https://murindasentrabaja.github.io/Form-Gudang/'],
+  ['Perbaikan Mesin','fa-screwdriver-wrench','https://murindasentrabaja.github.io/Form-Perbaikan-Mesin/']]},
+ {n:'Label',c:['#a58bff','#7c4dff'],i:[
+  ['Label Komponen','fa-tags','https://murindasentrabaja.github.io/Label-Komponen/'],
+  ['Product Label','fa-barcode','https://murindasentrabaja.github.io/Product-Label/']]},
+ {n:'Pengiriman',c:['#35d6c0','#0ea5a4'],i:[
+  ['Delivery Order','fa-truck-fast','https://murindasentrabaja.github.io/Logistics/'],
+  ['Surat Jalan','fa-route','https://murindasentrabaja.github.io/Surat-Jalan/']]},
+ {n:'Umum',c:['#ff7aa8','#f43f78'],i:[
+  ['Surat Perintah Lembur','fa-user-clock','https://murindasentrabaja.github.io/Surat-Perintah-Lembur-MSB/'],
+  ['Parking System','fa-square-parking','https://murindasentrabaja.github.io/MSB-Parking-Sticker/']]}
+];
+const ALL=[];let k=0,cur=null,tm;
+const stage=$('stage'),frame=$('frame'),side=$('side'),scrim=$('scrim'),title=$('title'),ext=$('ext');
 
-            document.getElementById('welcome-msg').style.opacity = '0';
-            document.getElementById('systemFrame').style.opacity = '1';
-        }
+G.forEach(g=>{
+ const st=`--c1:${g.c[0]};--c2:${g.c[1]}`,head=`<span class="dot" style="background:${g.c[1]}"></span>`;
+ let a='',b='';
+ g.i.forEach(([t,ic,u,x])=>{
+  const icon=`<span class="ic"><i class="fa-solid ${ic}"></i></span>`;
+  a+=`<button class="ni" data-i="${k}" style="${st}">${icon}<span>${t}</span>${x?'<i class="fa-solid fa-arrow-up-right-from-square ex"></i>':''}</button>`;
+  b+=`<button class="card" data-i="${k}" style="${st}">${icon}<span>${t}</span></button>`;
+  ALL.push({t,u,x});k++;
+ });
+ $('nav').insertAdjacentHTML('beforeend',`<div class="gl">${head}${g.n}</div>${a}`);
+ $('groups').insertAdjacentHTML('beforeend',`<section class="grp"><h3>${head}${g.n}</h3><div class="cards">${b}</div></section>`);
+});
 
-        function frameLoaded() {
-            let frame = document.getElementById('systemFrame');
-            if(frame.src && frame.src !== window.location.href) {
-                frame.style.opacity = '1';
-            }
-        }
+function mark(i){document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('on',i===null?n.id==='homeBtn':n.dataset.i==i))}
+function openSide(){side.classList.add('open');scrim.classList.add('on');$('menu').setAttribute('aria-expanded','true')}
+function closeSide(){side.classList.remove('open');scrim.classList.remove('on');$('menu').setAttribute('aria-expanded','false')}
 
-        setInterval(() => {
-            const timeElement = document.getElementById('clock');
-            const now = new Date();
-            timeElement.innerText = now.toLocaleTimeString('id-ID', { hour12: false }) + ' WIB';
-        }, 1000);
-    </script>
+function openItem(i){
+ const it=ALL[i];
+ if(it.x){window.open(it.u,'_blank','noopener');closeSide();return}
+ closeSide();
+ if(cur===i&&stage.classList.contains('fr'))return;
+ cur=i;stage.classList.add('fr','busy');frame.src=it.u;
+ title.textContent=it.t;ext.hidden=false;mark(i);
+ history.replaceState(null,'','#m'+i);
+ clearTimeout(tm);tm=setTimeout(()=>stage.classList.remove('busy'),10000);
+}
+function goHome(){
+ cur=null;frame.src='about:blank';stage.classList.remove('fr','busy');
+ title.textContent='Beranda';ext.hidden=true;mark(null);closeSide();
+ history.replaceState(null,'',location.pathname);
+}
+
+document.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)openItem(+b.dataset.i)});
+$('homeBtn').onclick=goHome;
+$('menu').onclick=openSide;$('close').onclick=closeSide;scrim.onclick=closeSide;
+ext.onclick=()=>{if(cur!==null)window.open(ALL[cur].u,'_blank','noopener')};
+frame.addEventListener('load',()=>stage.classList.remove('busy'));
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSide()});
+
+function tick(){
+ const d=new Date();
+ $('clock').textContent=d.toLocaleTimeString('id-ID',{hour12:false,timeZone:'Asia/Jakarta'})+' WIB';
+}
+tick();setInterval(tick,1000);
+
+const h=+new Intl.DateTimeFormat('id-ID',{hour:'numeric',hourCycle:'h23',timeZone:'Asia/Jakarta'}).format(new Date());
+$('greet').textContent='Selamat '+(h<11?'pagi':h<15?'siang':h<18?'sore':'malam')+', selamat bekerja';
+
+const m=location.hash.match(/^#m(\d+)$/);
+if(m&&ALL[m[1]]&&!ALL[m[1]].x)openItem(+m[1]);
+</script>
 </body>
 </html>
