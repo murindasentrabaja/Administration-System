@@ -42,7 +42,8 @@ button{font-family:inherit;color:inherit}
 .bar{display:flex;align-items:center;gap:10px;padding:10px 14px 10px 18px;border-radius:var(--r)}
 .bar h1{flex:1;min-width:0;font-size:1.15rem;font-weight:800;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ib{width:42px;height:42px;flex:none;border-radius:13px;border:1px solid var(--line);background:#fff;display:grid;place-items:center;cursor:pointer}
-.menu,.close{display:none}
+.close{display:none}
+.app.collapsed .side{display:none}
 .clock{padding:8px 14px;border-radius:999px;font-size:.85rem;font-weight:700;font-variant-numeric:tabular-nums;color:#3b4fd8;background:linear-gradient(135deg,#e6efff,#f1e6ff)}
 .stage{flex:1;min-height:0;position:relative;border-radius:var(--r);overflow:hidden}
 iframe{display:none;position:absolute;inset:0;width:100%;height:100%;border:0;background:#fff}
@@ -70,8 +71,9 @@ iframe{display:none;position:absolute;inset:0;width:100%;height:100%;border:0;ba
 .scrim{display:none}
 
 /* Ponsel & tablet */
-@media(max-width:860px){
- .app{padding:0;gap:0}
+@media (max-width:1024px),(hover:none) and (pointer:coarse){
+ .app{padding:0 env(safe-area-inset-right,0px) 0 env(safe-area-inset-left,0px);gap:0}
+ .app.collapsed .side{display:flex}
  .side{position:fixed;z-index:30;top:0;bottom:0;left:0;width:min(86vw,330px);border-radius:0 24px 24px 0;background:rgba(255,255,255,.94);padding-top:var(--st);transform:translateX(-105%);transition:transform .3s cubic-bezier(.2,.8,.2,1)}
  .side.open{transform:none}
  .scrim{display:block;position:fixed;inset:0;z-index:20;background:rgba(15,27,61,.42);opacity:0;pointer-events:none;transition:opacity .25s}
@@ -83,9 +85,11 @@ iframe{display:none;position:absolute;inset:0;width:100%;height:100%;border:0;ba
  .stage{border-radius:0;border:0;box-shadow:none}
  .home{padding:14px 14px 24px}
  .hero{padding:22px 20px}
- .cards{grid-template-columns:repeat(2,1fr);gap:10px}
+ .cards{gap:10px}
  .card{padding:14px}
 }
+@media(max-width:560px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(max-height:540px){.bar{padding-top:calc(4px + var(--st));padding-bottom:4px}.ib{width:38px;height:38px}.hero{padding:16px 20px}.home{padding-top:12px}}
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
@@ -106,7 +110,7 @@ iframe{display:none;position:absolute;inset:0;width:100%;height:100%;border:0;ba
 
  <main class="main">
   <header class="bar glass">
-   <button class="ib menu" id="menu" aria-label="Buka menu" aria-expanded="false"><i class="fa-solid fa-bars"></i></button>
+   <button class="ib menu" id="menu" aria-label="Tampilkan atau sembunyikan menu" title="Tampilkan / sembunyikan menu" aria-expanded="true"><i class="fa-solid fa-bars"></i></button>
    <h1 id="title">Beranda</h1>
    <button class="ib" id="ext" aria-label="Buka di tab baru" title="Buka di tab baru" hidden><i class="fa-solid fa-arrow-up-right-from-square"></i></button>
    <div class="clock" id="clock">00.00.00 WIB</div>
@@ -145,9 +149,11 @@ const G=[
   ['Surat Jalan','fa-route','https://murindasentrabaja.github.io/Surat-Jalan/']]},
  {n:'Umum',c:['#ff7aa8','#f43f78'],i:[
   ['Surat Perintah Lembur','fa-user-clock','https://murindasentrabaja.github.io/Surat-Perintah-Lembur-MSB/'],
-  ['Parking System','fa-square-parking','https://murindasentrabaja.github.io/MSB-Parking-Sticker/']]}
+  ['Parking System','fa-square-parking','https://murindasentrabaja.github.io/MSB-Parking-Sticker/'],
+  ['Form Daftar Hadir','fa-user-check','https://murindasentrabaja.github.io/Daftar-Hadir/']]}
 ];
 const ALL=[];let k=0,cur=null,tm;
+const app=document.querySelector('.app'),MQ=matchMedia('(max-width:1024px),(hover:none) and (pointer:coarse)');
 const stage=$('stage'),frame=$('frame'),side=$('side'),scrim=$('scrim'),title=$('title'),ext=$('ext');
 
 G.forEach(g=>{
@@ -164,8 +170,9 @@ G.forEach(g=>{
 });
 
 function mark(i){document.querySelectorAll('.ni').forEach(n=>n.classList.toggle('on',i===null?n.id==='homeBtn':n.dataset.i==i))}
-function openSide(){side.classList.add('open');scrim.classList.add('on');$('menu').setAttribute('aria-expanded','true')}
-function closeSide(){side.classList.remove('open');scrim.classList.remove('on');$('menu').setAttribute('aria-expanded','false')}
+function sync(){$('menu').setAttribute('aria-expanded',String(MQ.matches?side.classList.contains('open'):!app.classList.contains('collapsed')))}
+function openSide(){side.classList.add('open');scrim.classList.add('on');sync()}
+function closeSide(){side.classList.remove('open');scrim.classList.remove('on');sync()}
 
 function openItem(i){
  const it=ALL[i];
@@ -185,7 +192,11 @@ function goHome(){
 
 document.addEventListener('click',e=>{const b=e.target.closest('[data-i]');if(b)openItem(+b.dataset.i)});
 $('homeBtn').onclick=goHome;
-$('menu').onclick=openSide;$('close').onclick=closeSide;scrim.onclick=closeSide;
+$('menu').onclick=()=>{
+ if(MQ.matches){side.classList.contains('open')?closeSide():openSide();return}
+ const c=app.classList.toggle('collapsed');sync();
+ try{localStorage.setItem('msbSide',c?'1':'0')}catch(e){}
+};$('close').onclick=closeSide;scrim.onclick=closeSide;
 ext.onclick=()=>{if(cur!==null)window.open(ALL[cur].u,'_blank','noopener')};
 frame.addEventListener('load',()=>stage.classList.remove('busy'));
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSide()});
@@ -198,6 +209,10 @@ tick();setInterval(tick,1000);
 
 const h=+new Intl.DateTimeFormat('id-ID',{hour:'numeric',hourCycle:'h23',timeZone:'Asia/Jakarta'}).format(new Date());
 $('greet').textContent='Selamat '+(h<11?'pagi':h<15?'siang':h<18?'sore':'malam')+', selamat bekerja';
+
+try{if(localStorage.getItem('msbSide')==='1')app.classList.add('collapsed')}catch(e){}
+MQ.addEventListener('change',closeSide);
+sync();
 
 const m=location.hash.match(/^#m(\d+)$/);
 if(m&&ALL[m[1]]&&!ALL[m[1]].x)openItem(+m[1]);
